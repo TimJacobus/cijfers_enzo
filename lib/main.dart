@@ -2,20 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'shared/util/util.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'state_models/providers/providers.dart';
 import 'state_models/notifiers/notifiers.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'screens/screens.dart';
 
 void main() {
   runApp(ProviderScope(child: MyApp()));
 }
 
-final helloWorldProvider = Provider((ref) => 'Hello world!');
-
-class MyApp extends ConsumerWidget {
+class MyApp extends HookWidget {
   @override
-  Widget build(BuildContext context, ScopedReader watch) {
-    final studentNotifier = watch(studentNotifierProvider);
+  Widget build(
+    BuildContext context,
+  ) {
+    final studentNotifier = useProvider(studentNotifierProvider);
+    final students = useProvider(studentNotifierProvider.state);
 
     return MaterialApp(
       builder: (context, child) {
@@ -26,10 +28,21 @@ class MyApp extends ConsumerWidget {
         );
       },
       title: 'Cijfers Enzo',
+      routes: routes(context),
       theme: ThemeData(),
       home: Scaffold(
         appBar: AppBar(
           title: Text('Cijfers Enzo'),
+          actions: [
+            IconButton(
+              icon: FaIcon(
+                FontAwesomeIcons.child,
+              ),
+              tooltip: 'Leerlingen',
+              onPressed: () =>
+                  Navigator.of(context).pushNamed(StudentScreen.routeName),
+            ),
+          ],
         ),
         body: Center(
           child: Column(
@@ -38,43 +51,45 @@ class MyApp extends ConsumerWidget {
                 child: Text('Add a student'),
                 onPressed: () => studentNotifier.add(
                   Student(
-                    index: 0,
+                    index: students.length ?? 0,
                     firstName: 'Iloumar',
                     lastName: 'Celesteijn',
                     studentId: UniqueKey(),
                   ),
                 ),
               ),
-              Students(),
+              ElevatedButton(
+                child: Text('Edit a student'),
+                onPressed: () => studentNotifier.edit(
+                  students[1].studentId,
+                  'Mohamed',
+                  'Broeder',
+                  '',
+                ),
+              ),
+              ElevatedButton(
+                child: Text('Remove a student'),
+                onPressed: () => studentNotifier.remove(students[1].studentId),
+              ),
+              Column(
+                children: students
+                    .map((student) => Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                right: 20,
+                              ),
+                              child: Text(student.firstName),
+                            ),
+                            Text(student.lastName)
+                          ],
+                        ))
+                    .toList(),
+              ),
             ],
           ),
         ),
       ),
-    );
-  }
-}
-
-class Students extends HookWidget {
-  const Students({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final students = useProvider(studentNotifierProvider.state);
-
-    return Column(
-      children: students
-          .map((student) => Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(right: 20,),
-                    child: Text(student.firstName),
-                  ),
-                  Text(student.lastName)
-                ],
-              ))
-          .toList(),
     );
   }
 }

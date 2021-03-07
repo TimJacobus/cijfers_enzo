@@ -1,12 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter/material.dart';
 
 class Student {
-  String firstName;
-  String lastName;
-  String lastNamePrefix;
+  final String firstName;
+  final String lastName;
+  final String lastNamePrefix;
   final Key studentId;
-  int index;
+  final int index;
 
   Student({
     @required this.firstName,
@@ -15,20 +16,6 @@ class Student {
     @required this.index,
     this.lastNamePrefix,
   });
-
-  void updateIndex(int newIndex) {
-    index = newIndex;
-  }
-
-  void updateStudentName(
-    String newFirstName,
-    String newLastName,
-    String newLastNamePrefix,
-  ) {
-    firstName = newFirstName;
-    lastName = newLastName;
-    lastNamePrefix = newLastNamePrefix;
-  }
 }
 
 class StudentsNotifier extends StateNotifier<List<Student>> {
@@ -36,28 +23,35 @@ class StudentsNotifier extends StateNotifier<List<Student>> {
 
   void add(Student student) {
     state = [...state, student];
-    print('Done');
   }
 
   void remove(Key studentId) {
     final int removedIndex =
         state.firstWhere((student) => student.studentId == studentId).index;
-    state
+    state = state
       ..removeWhere((student) => student.studentId == studentId)
       ..map((student) {
         if (student.index > removedIndex)
-          student.updateIndex(student.index - 1);
+          Student(
+            firstName: student.firstName,
+            lastName: student.lastName,
+            index: student.index - 1,
+            studentId: student.studentId,
+            lastNamePrefix: student.lastNamePrefix,
+          );
       }).toList();
   }
 
-  void edit(Key studentId, String firstName, String lastName,
-      String lastNamePrefix) {
-    state.map((student) {
+  void edit(
+      Key studentId, String firstName, String lastName, String lastNamePrefix) {
+    state = state..map((student) {
       if (student.studentId == studentId)
-        student.updateStudentName(
-          firstName,
-          lastName,
-          lastNamePrefix,
+        Student(
+          studentId: student.studentId,
+          index: student.index,
+          lastName: lastName,
+          firstName: firstName,
+          lastNamePrefix: lastNamePrefix,
         );
     }).toList();
   }
