@@ -33,7 +33,7 @@ class NavigationScaffold extends StatelessWidget {
                 children: [
                   NavigationItem(
                     routeName: StudentScreen.routeName,
-                    name: 'Students',
+                    name: 'Studends',
                     icon: Icon(Icons.lock),
                   ),
 

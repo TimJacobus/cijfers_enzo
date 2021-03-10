@@ -30,9 +30,17 @@ class MyApp extends HookWidget {
       title: 'Cijfers Enzo',
       routes: routes(context),
       theme: ThemeData(),
-      home:
-        Scaffold(appBar: AppBar(actions: [ElevatedButton(child: Text('Hello'), onPressed: () =>  Navigator.of(context).pushNamed(StudentScreen.routeName),)],), body: Center(child: Text('Main screen 5'),),),
-
+      home: Scaffold(
+        appBar: AppBar(
+          actions: [
+            Hello()
+          ],
+        ),
+        body: Center(
+          child: Text('Main screen 5'),
+        ),
+      ),
     );
   }
 }
+
