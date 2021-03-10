@@ -10,7 +10,7 @@ class NavigationItem extends StatelessWidget {
   }) : super(key: key);
 
   final String routeName;
-  final FaIcon icon;
+  final Icon icon;
   final String name;
 
   @override
@@ -21,7 +21,7 @@ class NavigationItem extends StatelessWidget {
           icon: icon,
           onPressed: () => Navigator.of(context).pushNamed(routeName),
         ),
-        Text(name),
+        Text('$name'),
       ],
     );
   }
