@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'shared_widgets.dart';
 import '../../screens/screens.dart';
@@ -7,11 +6,10 @@ import '../../screens/screens.dart';
 
 class NavigationScaffold extends StatelessWidget {
   const NavigationScaffold({
-    Key key,
-    @required this.body,
-  }) : super(key: key);
+    @required this.customBody,
+  }) : super();
 
-  final Widget body;
+  final Widget customBody;
 
   @override
   Widget build(BuildContext context) {
@@ -21,19 +19,29 @@ class NavigationScaffold extends StatelessWidget {
           Expanded(
             flex: 120,
             child: Container(
-              color: Colors.deepPurple,
+              decoration: BoxDecoration(
+                color: Colors.deepPurple,
+                boxShadow: [
+                  BoxShadow(
+                    blurRadius: 5,
+                    spreadRadius: 5,
+                    color: Colors.deepPurple.shade300,
+                  ),
+                ],
+              ),
               child: Column(
                 children: [
                   NavigationItem(
                     routeName: StudentScreen.routeName,
-                    icon: FaIcon(FontAwesomeIcons.child),
-                    name: 'Leerlingen',
+                    name: 'Students',
+                    icon: Icon(Icons.lock),
                   ),
+
                 ],
               ),
             ),
           ),
-          Expanded(flex: 880, child: body),
+          Expanded(flex: 880, child: customBody),
         ],
       ),
     );

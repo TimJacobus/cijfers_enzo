@@ -12,6 +12,6 @@ class StudentScreen extends HookWidget {
     final studentNotifier = useProvider(studentNotifierProvider);
     final students = useProvider(studentNotifierProvider.state);
 
-    return NavigationScaffold(body: Text('hello world'));
+    return Scaffold(body: Text('Are you looking for me?'));
   }
 }
