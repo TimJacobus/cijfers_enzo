@@ -9,7 +9,7 @@ class Hello extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      child: Text('Hellooooooooo'),
+      child: Text('Hello'),
       onPressed: () =>
           Navigator.of(context).pushNamed(StudentScreen.routeName),
     );
